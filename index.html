@@ -24,12 +24,12 @@
         </select>
       </div>
     </div>
-
-    <button type="submit" id="btn" class="btn btn-primary w-auto" onclick="handleSubmit()">
+    <button type="submit" id="btn" class="btn btn-primary w-auto">
       Add Expense
     </button>
     <div id="li"></div>
   </form>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
     document.getElementById("btn").addEventListener("click", (event) => {
       event.preventDefault();
@@ -48,6 +48,46 @@
       }
       saveData()
     });
+    const loadData = async () => {
+      try {
+        let value = await axios.get("https://crudcrud.com/api/a0c79db7d329426e9926247dc0b9ea0d/post")
+        value = value.data
+
+
+        for (let i = 0; i < value.length; i++) {
+          let li = document.createElement("li");
+          li.textContent = `${value[i].amount} - ${value[i].desc} - ${value[i].option}`;
+          document.getElementById("li").appendChild(li);
+
+          let deleteButton = document.createElement("button");
+          deleteButton.innerHTML = "Delete";
+
+          let editButton = document.createElement("button");
+          editButton.innerHTML = "Edit";
+
+          li.appendChild(deleteButton);
+          li.appendChild(editButton);
+
+          deleteButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            li.remove();
+            localStorage.removeItem(value.amount);
+          });
+
+          editButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            li.remove();
+            localStorage.removeItem(value.amount);
+            document.getElementById("amount").focus();
+          });
+
+        }
+      } catch (err) {
+        console.log(err)
+      }
+
+    }
+    loadData()
   </script>
 </body>
 
