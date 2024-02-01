@@ -41,7 +41,7 @@
       }
       const saveData = async () => {
         try {
-          await axios.post("https://crudcrud.com/api/a0c79db7d329426e9926247dc0b9ea0d/post", obj)
+          await axios.post("https://crudcrud.com/api/96682429cfaa47419a174bba1ae46e36/post", obj)
         } catch (err) {
           console.log(err)
         }
@@ -50,7 +50,7 @@
     });
     const loadData = async () => {
       try {
-        let value = await axios.get("https://crudcrud.com/api/a0c79db7d329426e9926247dc0b9ea0d/post")
+        let value = await axios.get("https://crudcrud.com/api/96682429cfaa47419a174bba1ae46e36/post")
         value = value.data
 
 
@@ -68,18 +68,25 @@
           li.appendChild(deleteButton);
           li.appendChild(editButton);
 
-          deleteButton.addEventListener("click", (e) => {
-            e.preventDefault();
+          deleteButton.addEventListener("click", async(e) => {
+           
+
+            console.log("delete button presses",value[i]._id)
             li.remove();
-            localStorage.removeItem(value.amount);
+            try{
+              await axios.delete(`https://crudcrud.com/api/96682429cfaa47419a174bba1ae46e36/post/${value[i]._id}`)
+
+            }catch(err){
+              console.log(err)
+            }
           });
 
-          editButton.addEventListener("click", (e) => {
-            e.preventDefault();
-            li.remove();
-            localStorage.removeItem(value.amount);
-            document.getElementById("amount").focus();
-          });
+          // editButton.addEventListener("click", (e) => {
+          //   e.preventDefault();
+          //   li.remove();
+          //   localStorage.removeItem(value.amount);
+          //   document.getElementById("amount").focus();
+          // });
 
         }
       } catch (err) {
